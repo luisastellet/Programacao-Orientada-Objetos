@@ -6,7 +6,7 @@ public class Principal {
     public static void main(String[] args) {
         final int TAM = Console.readInt('\n' + "Informe o tamanho da lista de empregados: ");
 
-        ListaDeObjetos listaDeEmpregados = new ListaDeObjetos(TAM);
+        ListaDeObjetos<Empregado> listaDeEmpregados = new ListaDeObjetos<>(TAM);
 
         String nome;
         double salario;

@@ -6,7 +6,7 @@ public class Principal {
     public static void main(String[] args) {
         final int TAM = Console.readInt('\n' + "Informe o tamanho da lista de empregados: ");
 
-        ListaDeObjetos listaDeEmpregados = new ListaDeObjetos(TAM);
+        ListaDeObjetos<Empregado> listaDeEmpregados = new ListaDeObjetos<>(TAM);
 
         String nome;
         double salario;
@@ -30,7 +30,7 @@ public class Principal {
                     nome = Console.readLine('\n' + "Digite o nome do empregado: ");
                     salario = Console.readDouble("Digite o salario do empregado: ");
                     umEmpregado = new Empregado(nome, salario);
-                    listaDeEmpregados.adicionar(umEmpregado);
+                    listaDeEmpregados.add(umEmpregado);
                     System.out.println('\n' + "Empregado cadastrado com sucesso!");
                 }
                 case 2 ->    // Alterar
@@ -75,7 +75,7 @@ public class Principal {
                         System.out.println('\n' + "Empregado não encontrado!");
                 }
                 case 4 -> {    // Listar tudo
-                    if (listaDeEmpregados.vazia())
+                    if (listaDeEmpregados.isEmpty())
                         System.out.println('\n' + "Não há empregados na lista.");
                     else {
                         System.out.println();
@@ -89,7 +89,7 @@ public class Principal {
                     }
                 }
                 case 5 -> {    // Listar Numero e Nome
-                    if (listaDeEmpregados.vazia())
+                    if (listaDeEmpregados.isEmpty())
                         System.out.println('\n' + "Não há empregados na lista.");
                     else {
                         System.out.println();
