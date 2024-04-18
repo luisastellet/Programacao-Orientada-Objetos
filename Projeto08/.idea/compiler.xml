@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="introducao-08-ZonedDateTime-incompleto" />
+        <module name="introducao-06-ZonedDateTime" />
+        <module name="introducao-07-ZonedDateTime-incompleto" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
