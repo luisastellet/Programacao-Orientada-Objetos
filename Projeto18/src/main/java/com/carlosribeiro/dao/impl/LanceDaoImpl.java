@@ -13,7 +13,7 @@ public class LanceDaoImpl extends DAOGenericoImpl<Lance> implements LanceDAO {
     public List<Lance> recuperarTodosOsLancesDeUmProduto(int id) {
         return map.values()
                           .stream()
-                          .filter((lance) -> lance.getProduto().getId() == id)
+                          .filter((lance) -> lance.getProduto().getNumero() == id)
                           .toList();
     }
 }

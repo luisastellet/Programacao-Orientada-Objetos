@@ -39,7 +39,7 @@ public class PrincipalProduto {
                     lanceMinimo = Console.readDouble("Informe o lance mínimo do produto: ");
                     umProduto = new Produto(nome, lanceMinimo);
                     produtoService.incluir(umProduto);
-                    System.out.println("\nProduto número " + umProduto.getId() + " cadastrado com sucesso!");
+                    System.out.println("\nProduto número " + umProduto.getNumero() + " cadastrado com sucesso!");
                 }
                 case 2 ->    // Alterar
                 {

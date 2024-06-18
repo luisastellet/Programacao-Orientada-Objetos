@@ -19,11 +19,15 @@ public class DAOGenericoImpl<V> implements DAOGenerico<V> {
     }
 
     public V incluir(V obj) {
+        Field campo = recuperarCampoIdentificador(obj);
+        atribuirContadorACampo(obj, campo);
+        return map.put(contador, obj);
+    }
+
+    private void atribuirContadorACampo(V obj, Field campo) {
         try {
-            Field campo = recuperarCampoIdentificador(obj);
             campo.setAccessible(true);
             campo.set(obj, ++contador);
-            return map.put(contador, obj);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -39,7 +43,9 @@ public class DAOGenericoImpl<V> implements DAOGenerico<V> {
     }
 
     public V alterar(V obj) {
-        return map.put(obj.getId(), obj);
+        Field campo = recuperarCampoIdentificador(obj);
+        atribuirContadorACampo(obj, campo);
+        return map.put(contador, obj);
     }
 
     public V remover(Integer id) {
