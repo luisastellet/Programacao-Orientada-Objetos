@@ -42,13 +42,11 @@ public class ProdutoService {
         if (produto == null) {
             throw new EntidadeNaoEncontradaException("Produto inexistente.");
         }
-        if (produto.getLances().isEmpty()) {
-            produtoDAO.remover(produto.getId());
-        } else {
+        if (!produto.getLances().isEmpty()) {
             throw new ProdutoComLancesException(
-                    "Este produto possui lances e não pode ser removido.");
+                "Este produto possui lances e não pode ser removido.");
         }
-        return produto;
+        return produtoDAO.remover(produto.getId());   
     }
 
     public Produto recuperarProdutoPorId(int id) {
