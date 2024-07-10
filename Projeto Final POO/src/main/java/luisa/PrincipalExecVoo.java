@@ -1,16 +1,10 @@
 package luisa;
 
 import corejava.Console;
-import luisa.exception.DataHoraInvalidaException;
-import luisa.exception.EntidadeNaoEncontradaException;
-import luisa.exception.JaAconteceuException;
-import luisa.model.ExecTrecho;
-import luisa.model.ExecVoo;
-import luisa.model.Voo;
-import luisa.service.ExecVooService;
-import luisa.service.VooService;
+import luisa.exception.*;
+import luisa.model.*;
+import luisa.service.*;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public class PrincipalExecVoo {
@@ -31,12 +25,18 @@ public class PrincipalExecVoo {
             System.out.println('\n' + "O que você deseja fazer?");
             System.out.println('\n' + "1. Cadastrar Execução de Voo");
             System.out.println("2. Remover Execução de Voo");
-            System.out.println("3. Listar todas as execuções de Voo");
-            System.out.println("4. Listar o voo de uma execução de voo");
-            System.out.println("5. Listar as execuções de trecho de uma execução de voo");
-            System.out.println("6. Voltar");
+            System.out.println("3. Listar todas as Execuções de Voo");
+            System.out.println('\n' + "========================================================");
+            System.out.println('\n' + "Opções extras");
+            System.out.println("4. Listar o Voo de uma Execução de Voo");
+            System.out.println("5. Listar as Execuções de Trecho de uma Execução de Voo");
+            System.out.println("6. Listar os Trechos de uma Execução de Voo");
+            System.out.println("7. Listar as Passagens de uma Execução de Voo");
+            System.out.println("8. Listar os Clientes de uma Execução de Voo");
 
-            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 6:");
+            System.out.println("9. Voltar");
+
+            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 9:");
 
             System.out.println();
 
@@ -51,7 +51,7 @@ public class PrincipalExecVoo {
                         execVooService.incluir(umaExecVoo);
                         System.out.println("\nExecução de voo de número " + umaExecVoo.getId() + " cadastrada com sucesso!");
                     }
-                    catch(EntidadeNaoEncontradaException | DataHoraInvalidaException e) {
+                    catch(EntidadeNaoEncontradaException | DataHoraInvalidaException | TrechosNaoCompletosException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
@@ -97,7 +97,52 @@ public class PrincipalExecVoo {
                         System.out.println(exec);
                     }
                 }
-                case 6 -> continua = false;
+                case 6 -> {
+                    int id = Console.readInt("Qual o id da execução de voo? ");
+                    try {
+                        umaExecVoo = execVooService.recuperarExecucaoDeVooPorId(id);
+                    }catch(EntidadeNaoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+                    List<Trecho> trechos = umaExecVoo.getVoo().getTrechos();
+                    for (Trecho trecho : trechos) {
+                        System.out.println(trecho);
+                    }
+                }
+                case 7 -> {
+                    int id = Console.readInt("Qual o id da execução de voo? ");
+                    try {
+                        umaExecVoo = execVooService.recuperarExecucaoDeVooPorId(id);
+                    }catch(EntidadeNaoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+                    List<ExecTrecho> execTrechos = umaExecVoo.getExecucoesTrechos();
+                    for (ExecTrecho exec : execTrechos) {
+                        List<Passagem> passagens = exec.getPassagens();
+                        for (Passagem passagem : passagens){
+                            System.out.println(passagem);
+                        }
+                    }
+                }
+                case 8 -> {
+                    int id = Console.readInt("Qual o id da execução de voo? ");
+                    try {
+                        umaExecVoo = execVooService.recuperarExecucaoDeVooPorId(id);
+                    }catch(EntidadeNaoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+                    List<ExecTrecho> execTrechos = umaExecVoo.getExecucoesTrechos();
+                    for (ExecTrecho exec : execTrechos) {
+                        List<Passagem> passagens = exec.getPassagens();
+                        for (Passagem passagem : passagens){
+                            System.out.println(passagem.getCliente());
+                        }
+                    }
+                }
+                case 9 -> continua = false;
 
                 default -> System.out.println('\n' + "Opção inválida!");
             }

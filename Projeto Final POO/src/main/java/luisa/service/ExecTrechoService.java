@@ -1,22 +1,11 @@
 package luisa.service;
 
-import luisa.dao.ExecVooDAO;
-import luisa.dao.PassagemDAO;
-import luisa.dao.TrechoDAO;
-import luisa.exception.DataHoraInvalidaException;
-import luisa.exception.EntidadeNaoEncontradaException;
-import luisa.exception.ListaDoObjetoNaoVaziaException;
-import luisa.exception.VoosNaoRelacionadosException;
-import luisa.model.Cliente;
-import luisa.model.ExecTrecho;
 import luisa.dao.ExecTrechoDAO;
-import luisa.model.Passagem;
-import luisa.model.Trecho;
+import luisa.exception.*;
+import luisa.model.*;
 import luisa.util.FabricaDeDaos;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 public class ExecTrechoService {
 
@@ -47,7 +36,7 @@ public class ExecTrechoService {
     }
 
     public ExecTrecho incluir (ExecTrecho execTrecho){
-        if (Objects.equals(execTrecho.getTrecho().getVoo(), execTrecho.getExecVoo().getVoo())) {
+        if (execTrecho.getTrecho().getVoo().equals(execTrecho.getExecVoo().getVoo())) {
             execTrechoDAO.incluir(execTrecho);
             execTrecho.getTrecho().getExecucoesTrechos().add(execTrecho);
         } else

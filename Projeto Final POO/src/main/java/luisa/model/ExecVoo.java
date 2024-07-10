@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ExecVoo implements Serializable {
 
+    @Id
     private int id;
     private ZonedDateTime dataHoraInicial;
     private ZonedDateTime dataHoraFinal;
@@ -45,11 +46,10 @@ public class ExecVoo implements Serializable {
 
     public String toString() {
         return "Id = " + id +
-                "  Data e hora inicial = " + getDataHoraInicial() +
-                "  Data e hora final = " + getDataHoraFinal();
+                "  |  Início = " + getDataHoraInicial() +
+                "  |  Fim = " + getDataHoraFinal();
     }
 
-    @Id
     public Integer getId() {
         return id;
     }
@@ -65,8 +65,6 @@ public class ExecVoo implements Serializable {
 
     public String getDataHoraFinal()
     {
-        System.out.println("Data e hora em UTC: " + dataHoraFinal);
-
         return DTF.format(dataHoraFinal.withZoneSameInstant(ZoneId.of("America/Sao_Paulo")));
     }
 
@@ -129,10 +127,10 @@ public class ExecVoo implements Serializable {
         if (dataHoraFinal.isBefore(dataHoraInicial)) {
             throw new DataHoraInvalidaException("A data final não pode ser anterior à data inicial.");
         }
-        ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
-        if(dataHoraInicial.isBefore(agora) | dataHoraFinal.isBefore(agora)){
-            throw new DataHoraInvalidaException("As datas e horários não podem já ter ocorrido.");
-        }
+//        ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
+//        if(dataHoraInicial.isBefore(agora) | dataHoraFinal.isBefore(agora)){
+//            throw new DataHoraInvalidaException("As datas e horários não podem já ter ocorrido.");
+//        }
     }
 
     public boolean jaAconteceu() {

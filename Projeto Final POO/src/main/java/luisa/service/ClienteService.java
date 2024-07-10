@@ -1,26 +1,26 @@
 package luisa.service;
 
 import luisa.dao.ClienteDAO;
-import luisa.exception.EntidadeNaoEncontradaException;
-import luisa.exception.ListaDoObjetoNaoVaziaException;
-import luisa.model.Cliente;
-import luisa.model.ExecTrecho;
-import luisa.model.Passagem;
-import luisa.model.Trecho;
+import luisa.exception.*;
+import luisa.model.*;
 import luisa.util.FabricaDeDaos;
 
 import java.util.List;
 
 public class ClienteService {
+    
     private final ClienteDAO clienteDAO = FabricaDeDaos.getDAO(ClienteDAO.class);
 
     public Cliente incluir(Cliente cliente) {
         return clienteDAO.incluir(cliente);
     }
 
-    public Cliente alterar(Cliente cliente, String novoNome) {
+    public void alterarNome(Cliente cliente, String novoNome) {
         cliente.setNome(novoNome);
-        return cliente;
+    }
+
+    public void alterarCpf(Cliente cliente, String novoCpf) {
+        cliente.setCpf(novoCpf);
     }
 
     public Cliente recuperarClientePorId(int id) {

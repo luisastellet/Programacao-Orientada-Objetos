@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Cliente implements Serializable{
 
+    @Id
     private int id;
     private String nome;
     private String cpf;
@@ -18,10 +19,9 @@ public class Cliente implements Serializable{
     }
 
     public String toString() {
-        return "Id = " + id + "  Nome = " + nome + " Cpf = " + cpf;
+        return "Id = " + id + "  |  Nome = " + nome + "  |  Cpf = " + cpf;
     }
 
-    @Id
     public Integer getId() {
         return id;
     }
@@ -40,6 +40,10 @@ public class Cliente implements Serializable{
 
     public void setNome(String novoNome) {
         this.nome = novoNome;
+    }
+
+    public void setCpf(String novoCpf) {
+        this.cpf = novoCpf;
     }
 
     public List<Passagem> getPassagens() {

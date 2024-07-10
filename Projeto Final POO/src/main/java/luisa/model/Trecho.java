@@ -11,6 +11,7 @@ public class Trecho implements Serializable{
     private String destino;
     private int milhas;
     private double preco;
+    @Id
     private int id;
     private List<ExecTrecho> execucoesTrechos;
     private Voo umVoo;
@@ -25,7 +26,6 @@ public class Trecho implements Serializable{
         this.execucoesTrechos = new ArrayList<>();
     }
 
-    @Id
     public Integer getId() {
         return id;
     }
@@ -35,7 +35,7 @@ public class Trecho implements Serializable{
     }
 
     public String toString() {
-        return "Id = " + id + "  Origem = " + origem + "  Destino = " + destino + "  Milhas = " + milhas + "  Preço = " + preco;
+        return "Id = " + id + "  |  Origem = " + origem + "  |  Destino = " + destino + "  |  Milhas = " + milhas + "  |  Preço = " + preco;
     }
 
     public String getOrigem (){
@@ -44,6 +44,10 @@ public class Trecho implements Serializable{
 
     public String getDestino (){
         return destino;
+    }
+
+    public void setOrigem (String novo){
+        this.origem = novo;
     }
 
     public int getMilhas (){

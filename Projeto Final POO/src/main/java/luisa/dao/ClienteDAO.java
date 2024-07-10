@@ -1,7 +1,6 @@
 package luisa.dao;
-import luisa.model.Cliente;
 
-import java.util.List;
+import luisa.model.Cliente;
 
 public interface ClienteDAO extends DAOGenerico <Cliente> {
 }

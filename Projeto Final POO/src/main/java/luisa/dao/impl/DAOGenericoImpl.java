@@ -3,8 +3,7 @@ package luisa.dao.impl;
 import luisa.dao.DAOGenerico;
 import luisa.util.Id;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,38 +33,34 @@ public class DAOGenericoImpl<V> implements DAOGenerico<V> {
     }
 
     public V incluir(V obj) {
-        try {
-            Method metodo = recuperarMetodoAnotadoComId(obj);
-            String metodoString = metodo.getName().replace("get", "set");
-            obj.getClass().getMethod(metodoString, Integer.class).invoke(obj, ++contador);
-            return map.put((Integer)metodo.invoke(obj), obj);
-        } catch (IllegalAccessException |
-                 InvocationTargetException |
-                 NoSuchMethodException e) {
+        Field campo = recuperarCampoIdentificado(obj);
+        atribuirContadorACampo(obj, campo);
+        return map.put(contador, obj);
+    }
+
+    private void atribuirContadorACampo(V obj, Field campo) {
+        try{
+            campo.setAccessible(true);
+            campo.set(obj, ++contador);
+        }
+        catch (IllegalAccessException e){
             throw new RuntimeException(e);
         }
     }
 
-    private Method recuperarMetodoAnotadoComId(V obj) {
-        for (Method metodo : obj.getClass().getDeclaredMethods()) {
-            if (metodo.isAnnotationPresent(Id.class)) {
-                return metodo;
+    private Field recuperarCampoIdentificado(V obj){
+        for (Field campo : obj.getClass().getDeclaredFields()){
+            if (campo.isAnnotationPresent(Id.class)){
+                return campo;
             }
         }
-        throw new RuntimeException("Deve haver um método anotado com @Id");
+        throw new RuntimeException("Deve haver um campo anotado com @Id");
     }
 
     public V alterar(V obj) {
-        try {
-            Method metodo = recuperarMetodoAnotadoComId(obj);
-            String metodoString = metodo.getName().replace("get", "set");
-            obj.getClass().getMethod(metodoString, Integer.class).invoke(obj, ++contador);
-            return map.put((Integer)metodo.invoke(obj), obj);
-        } catch (IllegalAccessException |
-                 InvocationTargetException |
-                 NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        Field campo = recuperarCampoIdentificado(obj);
+        atribuirContadorACampo(obj, campo);
+        return map.put(contador, obj);
     }
 
     public V remover(Integer id) {
@@ -77,6 +72,6 @@ public class DAOGenericoImpl<V> implements DAOGenerico<V> {
     }
 
     public List<V> recuperarTodos() {
-        return new ArrayList<>(map.values()); // .stream().toList();
+        return new ArrayList<>(map.values());
     }
 }

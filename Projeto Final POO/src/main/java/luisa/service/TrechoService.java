@@ -1,8 +1,7 @@
 package luisa.service;
 
-import luisa.exception.EntidadeNaoEncontradaException;
-import luisa.exception.ListaDoObjetoNaoVaziaException;
-import luisa.model.Trecho;
+import luisa.exception.*;
+import luisa.model.*;
 import luisa.dao.TrechoDAO;
 import luisa.util.FabricaDeDaos;
 
@@ -13,6 +12,11 @@ public class TrechoService {
     private final TrechoDAO trechoDAO = FabricaDeDaos.getDAO(TrechoDAO.class);
 
     public Trecho incluir(Trecho trecho) {
+        if(!trecho.getVoo().getTrechos().isEmpty()){
+            List<Trecho> trechos = trecho.getVoo().getTrechos();
+            String origem = trechos.getLast().getDestino();
+            trecho.setOrigem(origem);
+        }
         trechoDAO.incluir(trecho);
         trecho.getVoo().getTrechos().add(trecho);
         return trecho;

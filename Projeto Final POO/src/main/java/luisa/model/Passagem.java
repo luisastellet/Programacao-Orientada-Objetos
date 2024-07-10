@@ -9,23 +9,23 @@ import java.util.List;
 public class Passagem implements Serializable {
 
     private double preco; //soma dos trechos
+    @Id
     private int id;
     private Cliente umCliente;
     private int numero;
     private List<ExecTrecho> execucoesTrecho;
 
     public Passagem(Cliente cliente, int numero) {
-        this.preco = 0;
+        this.preco = 0.0;
         this.umCliente = cliente;
         this.numero = numero;
         this.execucoesTrecho = new ArrayList<>();
     }
 
     public String toString() {
-        return "Id = " + id + " Número = " + numero + "  Preço = " + preco;
+        return "Id = " + id + "  |  Número = " + numero + "  |  Preço = " + preco;
     }
 
-    @Id
     public Integer getId() {
         return id;
     }
@@ -38,12 +38,12 @@ public class Passagem implements Serializable {
         return preco;
     }
 
-    public double getNumero() {
+    public int getNumero() {
         return numero;
     }
 
     public void setPreco(double novoPreco) {
-        this.preco += novoPreco;
+        this.preco = novoPreco;
     }
 
     public Cliente getCliente() {

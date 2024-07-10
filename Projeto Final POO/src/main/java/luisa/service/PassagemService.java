@@ -2,15 +2,14 @@ package luisa.service;
 
 import luisa.dao.ExecTrechoDAO;
 import luisa.dao.PassagemDAO;
-import luisa.exception.EntidadeNaoEncontradaException;
-import luisa.exception.ListaDoObjetoNaoVaziaException;
-import luisa.model.ExecTrecho;
-import luisa.model.Passagem;
+import luisa.exception.*;
+import luisa.model.*;
 import luisa.util.FabricaDeDaos;
 
 import java.util.List;
 
 public class PassagemService {
+    
     private final PassagemDAO passagemDAO = FabricaDeDaos.getDAO(PassagemDAO.class);
     private final ExecTrechoDAO execTrechoDAO = FabricaDeDaos.getDAO(ExecTrechoDAO.class);
 
@@ -19,14 +18,13 @@ public class PassagemService {
     }
 
     public Passagem incluir(Passagem umaPassagem, int[] numbers) {
-        try {
-            for (int i = 0; i < numbers.length; i++) {
-                ExecTrecho umaExecTrecho = execTrechoDAO.recuperarPorId(numbers[i]);
-                umaExecTrecho.getPassagens().add(umaPassagem);
-                umaPassagem.getExecucoesTrechos().add(umaExecTrecho);
+        for (int number : numbers) {
+            ExecTrecho umaExecTrecho = execTrechoDAO.recuperarPorId(number);
+            if (umaExecTrecho == null) {
+                throw new EntidadeNaoEncontradaException("Execução de trecho inexiste, não é possivel cadastrar a passagem.");
             }
-        }catch(EntidadeNaoEncontradaException e) {
-            System.out.println('\n' + e.getMessage());
+            umaExecTrecho.getPassagens().add(umaPassagem);
+            umaPassagem.getExecucoesTrechos().add(umaExecTrecho);
         }
         umaPassagem.getCliente().getPassagens().add(umaPassagem);
         passagemDAO.incluir(umaPassagem);
@@ -54,5 +52,14 @@ public class PassagemService {
         if (passagem == null)
             throw new EntidadeNaoEncontradaException("Passagem inexistente.");
         return passagem;
+    }
+
+    public void calcularPreco(Passagem umaPassagem){
+        double resp = 0.0;
+        List<ExecTrecho> execTrechos = umaPassagem.getExecucoesTrechos();
+        for (ExecTrecho execTrecho : execTrechos) {
+            resp += execTrecho.getTrecho().getPreco();
+        }
+        umaPassagem.setPreco(resp);
     }
 }

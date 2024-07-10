@@ -9,6 +9,7 @@ public class Voo implements Serializable{
 
     private String origem;
     private String destino;
+    @Id
     private int id;
     private List<ExecVoo> execucoesVoos;
     private List<Trecho> trechos;
@@ -23,10 +24,9 @@ public class Voo implements Serializable{
     }
 
     public String toString() {
-        return "Id = " + id + "  Origem = " + origem + "  Destino = " + destino;
+        return "Id = " + id + "  |  Origem = " + origem + "  |  Destino = " + destino;
     }
 
-    @Id
     public Integer getId() {
         return id;
     }

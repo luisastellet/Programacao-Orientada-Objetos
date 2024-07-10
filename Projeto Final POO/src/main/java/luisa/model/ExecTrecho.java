@@ -14,6 +14,7 @@ import java.util.Locale;
 
 public class ExecTrecho implements Serializable{
 
+    @Id
     private int id;
     private ZonedDateTime dataHoraInicial;
     private ZonedDateTime dataHoraFinal;
@@ -43,11 +44,10 @@ public class ExecTrecho implements Serializable{
 
     public String toString() {
         return "Id = " + id +
-                "  Data e hora inicial = " + getDataHoraInicial() +
-                "  Data e hora final = " + getDataHoraFinal();
+                "  |  Início = " + getDataHoraInicial() +
+                "  |  Fim = " + getDataHoraFinal();
     }
 
-    @Id
     public Integer getId() {
         return id;
     }
@@ -124,14 +124,14 @@ public class ExecTrecho implements Serializable{
         }
     }
 
-    public void validarDatas() throws DataHoraInvalidaException {
+    public void validarDatas(){
         if (dataHoraFinal.isBefore(dataHoraInicial)) {
             throw new DataHoraInvalidaException("A data final não pode ser anterior à data inicial.");
         }
-        ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
-        if(dataHoraInicial.isBefore(agora) | dataHoraFinal.isBefore(agora)){
-            throw new DataHoraInvalidaException("As datas e horários não podem já ter ocorrido.");
-        }
+//        ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
+//        if(dataHoraInicial.isBefore(agora) | dataHoraFinal.isBefore(agora)){
+//            throw new DataHoraInvalidaException("As datas e horários não podem já ter ocorrido.");
+//        }
     }
 
     public boolean jaAconteceu() {
@@ -140,9 +140,28 @@ public class ExecTrecho implements Serializable{
     }
 
     public boolean posData(String data) {
-        ZonedDateTime dataIndicada = ZonedDateTime.parse(data);
-        ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
-        return agora.isAfter(dataIndicada);
+        try
+        {
+            int dia = Integer.parseInt(data.substring(0,2));
+            int mes = Integer.parseInt(data.substring(3,5));
+            int ano = Integer.parseInt(data.substring(6,10));
+
+            int hora =    Integer.parseInt(data.substring(11,13));
+            int minuto =  Integer.parseInt(data.substring(14,16));
+            int segundo = Integer.parseInt(data.substring(17,19));
+
+            ZonedDateTime dataIndicada = ZonedDateTime.of(
+                    ano, mes, dia, hora, minuto, segundo, 0,
+                    ZoneId.of("America/Sao_Paulo")).withZoneSameInstant(ZoneId.of("UTC"));
+
+            ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
+            return agora.isAfter(dataIndicada);
+        }
+        catch(StringIndexOutOfBoundsException | NumberFormatException | DateTimeException e)
+        {
+            throw new DataHoraInvalidaException("Data e hora inválida.");
+        }
+
     }
 }
 

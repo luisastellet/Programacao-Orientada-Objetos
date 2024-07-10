@@ -18,7 +18,7 @@ public class Principal {
         PrincipalExecTrecho principalExecTrecho = new PrincipalExecTrecho();
         PrincipalExecVoo principalExecVoo = new PrincipalExecVoo();
 
-        recuperarDados();
+        // recuperarDados();
 
         boolean continua = true;
         while (continua) {

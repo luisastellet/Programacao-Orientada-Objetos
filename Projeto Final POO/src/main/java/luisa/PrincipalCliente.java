@@ -1,9 +1,9 @@
 package luisa;
 import corejava.Console;
 
-import luisa.exception.EntidadeNaoEncontradaException;
-import luisa.model.Cliente;
-import luisa.service.ClienteService;
+import luisa.exception.*;
+import luisa.model.*;
+import luisa.service.*;
 
 import java.util.List;
 
@@ -21,14 +21,22 @@ public class PrincipalCliente {
         while (continua) {
             System.out.println('\n' + "========================================================");
             System.out.println('\n' + "O que você deseja fazer?");
-            System.out.println('\n' + "1. Cadastrar cliente");
-            System.out.println("2. Alterar o nome do cliente");
-            System.out.println("3. Remover cliente"); //se não tem passagem pra ocorrer ainda
-            System.out.println("4. Listar todos os clientes");
-            System.out.println("5. Listar os dados de um cliente");
-            System.out.println("6. Voltar");
+            System.out.println('\n' + "1. Cadastrar Cliente");
+            System.out.println("2. Alterar dados do Cliente");
+            System.out.println("3. Remover Cliente"); //se não tem passagem pra ocorrer ainda
+            System.out.println("4. Listar todos os Clientes");
+            System.out.println('\n' + "========================================================");
+            System.out.println('\n' + "Opções extras");
+            System.out.println("5. Listar os dados de um Cliente, incluindo as milhas");
+            System.out.println("6. Listar as Passagens de um Cliente");
+            System.out.println("7. Listar as Execuções de Trecho de um Cliente");
+            System.out.println("8. Listar as Execuções de Voo de um Cliente");
+            System.out.println("9. Listar os Voos de um Cliente");
+            System.out.println("10. Listar os Trechos de um Cliente");
 
-            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 6: ");
+            System.out.println("11. Voltar");
+
+            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 11: ");
 
             System.out.println();
 
@@ -51,8 +59,10 @@ public class PrincipalCliente {
                         break;
                     }
                     String novoNome = Console.readLine("Informe o novo nome do cliente que você deseja alterar: ");
-                    clienteService.alterar(umCliente, novoNome);
-                    System.out.println('\n' + "Alteração de nome efetuada com sucesso!");
+                    clienteService.alterarNome(umCliente, novoNome);
+                    String novoCpf = Console.readLine("Informe o novo cpf do cliente que você deseja alterar: ");
+                    clienteService.alterarCpf(umCliente, novoCpf);
+                    System.out.println('\n' + "Alteração efetuada com sucesso!");
                 }
                 case 3 ->
                 {
@@ -82,7 +92,86 @@ public class PrincipalCliente {
                     System.out.println(umCliente);
                     System.out.println("Quantidade de milhas até agora: " + clienteService.calcularMilhas(umCliente));
                 }
-                case 6 -> continua = false;
+                case 6 -> {
+                    int id = Console.readInt("Qual o id do cliente? ");
+                    try {
+                        umCliente = clienteService.recuperarClientePorId(id);
+                        List<Passagem> passagens = umCliente.getPassagens();
+                        for (Passagem passagem : passagens) {
+                            System.out.println(passagem);
+                        }
+                    }catch(EntidadeNaoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+                }
+                case 7 -> {
+                    int id = Console.readInt("Qual o id do cliente? ");
+                    try {
+                        umCliente = clienteService.recuperarClientePorId(id);
+                        List<Passagem> passagens = umCliente.getPassagens();
+                        for (Passagem passagem : passagens) {
+                            List<ExecTrecho> execTrechos = passagem.getExecucoesTrechos();
+                            for (ExecTrecho execTrecho : execTrechos){
+                                System.out.println(execTrecho);
+                            }
+                        }
+                    }catch(EntidadeNaoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+
+                }
+                case 8 -> {
+                    int id = Console.readInt("Qual o id do cliente? ");
+                    try {
+                        umCliente = clienteService.recuperarClientePorId(id);
+                        List<Passagem> passagens = umCliente.getPassagens();
+                        for (Passagem passagem : passagens) {
+                            List<ExecTrecho> execTrechos = passagem.getExecucoesTrechos();
+                            for (ExecTrecho execTrecho : execTrechos){
+                                System.out.println(execTrecho.getExecVoo());
+                            }
+                        }
+                    }catch(EntidadeNaoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+
+                }
+                case 9 -> {
+                    int id = Console.readInt("Qual o id do cliente? ");
+                    try {
+                        umCliente = clienteService.recuperarClientePorId(id);
+                        List<Passagem> passagens = umCliente.getPassagens();
+                        for (Passagem passagem : passagens) {
+                            List<ExecTrecho> execTrechos = passagem.getExecucoesTrechos();
+                            for (ExecTrecho execTrecho : execTrechos){
+                                System.out.println(execTrecho.getExecVoo().getVoo());
+                            }
+                        }
+                    }catch(EntidadeNaoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+                }
+                case 10 -> {
+                    int id = Console.readInt("Qual o id do cliente? ");
+                    try {
+                        umCliente = clienteService.recuperarClientePorId(id);
+                        List<Passagem> passagens = umCliente.getPassagens();
+                        for (Passagem passagem : passagens) {
+                            List<ExecTrecho> execTrechos = passagem.getExecucoesTrechos();
+                            for (ExecTrecho execTrecho : execTrechos){
+                                System.out.println(execTrecho.getTrecho());
+                            }
+                        }
+                    }catch(EntidadeNaoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+                }
+                case 11 -> continua = false;
 
                 default -> System.out.println('\n' + "Opção inválida!");
             }

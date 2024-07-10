@@ -1,18 +1,23 @@
 package luisa.service;
-import luisa.dao.ExecVooDAO;
 import luisa.dao.VooDAO;
-import luisa.exception.ListaDoObjetoNaoVaziaException;
+import luisa.exception.*;
 import luisa.model.*;
 import luisa.util.FabricaDeDaos;
-import luisa.exception.EntidadeNaoEncontradaException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VooService {
+
     private final VooDAO vooDAO = FabricaDeDaos.getDAO(VooDAO.class);
 
     public Voo incluir(Voo voo) {
+        List<Voo> voos = recuperarVoos();
+        for (Voo v : voos) {
+            if(voo.getOrigem().equals(v.getOrigem()) && voo.getDestino().equals(v.getDestino())) {
+                throw new ObjetoDuplicadoException('\n' + "Este voo já foi cadastrado!\n" + v.toString());
+            }
+        }
         return vooDAO.incluir(voo);
     }
 
