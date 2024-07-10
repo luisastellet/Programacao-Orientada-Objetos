@@ -46,7 +46,6 @@ public class ExecVooService {
 
     }
 
-
     public ExecVoo recuperarExecucaoDeVooPorId(int id) {
         ExecVoo execVoo = execVooDAO.recuperarPorId(id);
         if (execVoo == null)

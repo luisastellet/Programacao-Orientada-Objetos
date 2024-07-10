@@ -128,10 +128,6 @@ public class ExecTrecho implements Serializable{
         if (dataHoraFinal.isBefore(dataHoraInicial)) {
             throw new DataHoraInvalidaException("A data final não pode ser anterior à data inicial.");
         }
-//        ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
-//        if(dataHoraInicial.isBefore(agora) | dataHoraFinal.isBefore(agora)){
-//            throw new DataHoraInvalidaException("As datas e horários não podem já ter ocorrido.");
-//        }
     }
 
     public boolean jaAconteceu() {
@@ -201,8 +197,4 @@ public class ExecTrecho implements Serializable{
         }
 
     }
-
 }
-
-
-

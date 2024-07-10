@@ -36,20 +36,11 @@ public class ExecTrechoService {
     }
 
     public ExecTrecho incluir (ExecTrecho execTrecho){
-        boolean ver = false;
         if (execTrecho.getTrecho().getVoo().equals(execTrecho.getExecVoo().getVoo())) {
-            if(execTrecho.getExecVoo().getExecucoesTrechos().isEmpty()){
-                if(execTrecho.getExecVoo().getDataHoraInicial().equals(execTrecho.getDataHoraInicial())) ver = true;
-            }
-            if(!execTrecho.getExecVoo().getExecucoesTrechos().isEmpty()){
-                if(execTrecho.checagemExecucoes(execTrecho.getExecVoo().getExecucoesTrechos().getLast().getDataHoraFinal(), execTrecho.getDataHoraInicial())) ver = true;
-            }
-            if(ver){
-                execTrechoDAO.incluir(execTrecho);
-                execTrecho.getTrecho().getExecucoesTrechos().add(execTrecho);
-            }
-            else throw new DataHoraInvalidaException ("Datas e horas não seguem um padrão lógico.");
-            
+            execTrechoDAO.incluir(execTrecho);
+            execTrecho.getTrecho().getExecucoesTrechos().add(execTrecho);
+            execTrecho.getExecVoo().getExecucoesTrechos().add(execTrecho);
+
         } else
             throw new VoosNaoRelacionadosException("Não é possível cadastrar essa execução de trecho, pois a execução de voo e o trecho não são do mesmo voo");
 
@@ -62,5 +53,6 @@ public class ExecTrechoService {
             throw new EntidadeNaoEncontradaException("Execução de trecho inexistente.");
         return execTrecho;
     }
+
 
 }

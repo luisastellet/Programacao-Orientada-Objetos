@@ -54,10 +54,11 @@ public class PrincipalPassagem {
                     for (int i = 0; i < numbersString.length; i++) {
                         numbers[i] = Integer.parseInt(numbersString[i]);
                     }
-                    if(passagemService.recuperarPassagens().getLast() == null){
+                    List<Passagem> passagens = passagemService.recuperarPassagens();
+                    if(passagens.isEmpty()){
                         num = 10;
                     }
-                    else num = passagemService.recuperarPassagens().getLast().getNumero();
+                    else num = passagens.get(passagens.size()-1).getNumero();
                     umaPassagem = new Passagem(umCliente, num);
 
                     try {
@@ -82,10 +83,16 @@ public class PrincipalPassagem {
                     }
                 }
                 case 3 -> {    // Listar todas as passagens
-                    List<Passagem> passagens = passagemService.recuperarPassagens();
-                    for (Passagem passagem : passagens) {
-                        System.out.println(passagem);
+                    try{
+                        List<Passagem> passagens = passagemService.recuperarPassagens();
+                        for (Passagem passagem : passagens) {
+                            System.out.println(passagem);
+                        }
                     }
+                    catch (EntidadeNaoEncontradaException e){
+                        System.out.println(e.getMessage());
+                    }
+
                 }
                 case 4 -> {
                     int id = Console.readInt("Qual o id da passagem? ");
@@ -98,6 +105,7 @@ public class PrincipalPassagem {
                     List<ExecTrecho> execucoes = umaPassagem.getExecucoesTrechos();
                     for (ExecTrecho exec : execucoes) {
                         System.out.println(exec);
+                        break;
                     }
                 }
                 case 5 -> {
