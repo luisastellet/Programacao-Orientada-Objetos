@@ -26,8 +26,6 @@ public class PrincipalTrecho {
             System.out.println('\n' + "1. Cadastrar um Trecho");
             System.out.println("2. Remover um Trecho");
             System.out.println("3. Listar os Trechos");
-            System.out.println('\n' + "========================================================");
-            System.out.println('\n' + "Opções extras");
             System.out.println("4. Listar o Voo de um Trecho");
             System.out.println("5. Listar as Execuções de Trecho de um Trecho");
             System.out.println("6. Listar as Execuções de Voo de um Trecho");
@@ -67,6 +65,7 @@ public class PrincipalTrecho {
                         System.out.println('\n' + "Trecho removido com sucesso!");
                     } catch (EntidadeNaoEncontradaException e) {
                         System.out.println('\n' + e.getMessage());
+                        break;
                     }
                 }
                 case 3 -> {    // Listar tudo

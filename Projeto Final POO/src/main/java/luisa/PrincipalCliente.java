@@ -25,8 +25,6 @@ public class PrincipalCliente {
             System.out.println("2. Alterar dados do Cliente");
             System.out.println("3. Remover Cliente"); //se não tem passagem pra ocorrer ainda
             System.out.println("4. Listar todos os Clientes");
-            System.out.println('\n' + "========================================================");
-            System.out.println('\n' + "Opções extras");
             System.out.println("5. Listar os dados de um Cliente, incluindo as milhas");
             System.out.println("6. Listar as Passagens de um Cliente");
             System.out.println("7. Listar as Execuções de Trecho de um Cliente");

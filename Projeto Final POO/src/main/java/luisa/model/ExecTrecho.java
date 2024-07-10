@@ -139,6 +139,43 @@ public class ExecTrecho implements Serializable{
         return dataHoraInicial.isBefore(agora);
     }
 
+    public boolean checagemExecucoes(String anterior, String posterior) {
+        try
+        {
+            int dia = Integer.parseInt(anterior.substring(0,2));
+            int mes = Integer.parseInt(anterior.substring(3,5));
+            int ano = Integer.parseInt(anterior.substring(6,10));
+
+            int hora =    Integer.parseInt(anterior.substring(11,13));
+            int minuto =  Integer.parseInt(anterior.substring(14,16));
+            int segundo = Integer.parseInt(anterior.substring(17,19));
+
+            ZonedDateTime dataAnterior = ZonedDateTime.of(
+                    ano, mes, dia, hora, minuto, segundo, 0,
+                    ZoneId.of("America/Sao_Paulo")).withZoneSameInstant(ZoneId.of("UTC"));
+
+            dia = Integer.parseInt(posterior.substring(0,2));
+            mes = Integer.parseInt(posterior.substring(3,5));
+            ano = Integer.parseInt(posterior.substring(6,10));
+
+            hora =    Integer.parseInt(posterior.substring(11,13));
+            minuto =  Integer.parseInt(posterior.substring(14,16));
+            segundo = Integer.parseInt(posterior.substring(17,19));
+
+            ZonedDateTime dataPosterior = ZonedDateTime.of(
+                    ano, mes, dia, hora, minuto, segundo, 0,
+                    ZoneId.of("America/Sao_Paulo")).withZoneSameInstant(ZoneId.of("UTC"));
+
+            return dataPosterior.isAfter(dataAnterior);
+        }
+        catch(StringIndexOutOfBoundsException | NumberFormatException | DateTimeException e)
+        {
+            throw new DataHoraInvalidaException("Data e hora inválida.");
+        }
+
+    }
+
+
     public boolean posData(String data) {
         try
         {
@@ -154,8 +191,9 @@ public class ExecTrecho implements Serializable{
                     ano, mes, dia, hora, minuto, segundo, 0,
                     ZoneId.of("America/Sao_Paulo")).withZoneSameInstant(ZoneId.of("UTC"));
 
-            ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
-            return agora.isAfter(dataIndicada);
+            ZonedDateTime atual = ZonedDateTime.now(ZoneId.of("UTC"));
+
+            return atual.isAfter(dataIndicada);
         }
         catch(StringIndexOutOfBoundsException | NumberFormatException | DateTimeException e)
         {
@@ -163,6 +201,7 @@ public class ExecTrecho implements Serializable{
         }
 
     }
+
 }
 
 

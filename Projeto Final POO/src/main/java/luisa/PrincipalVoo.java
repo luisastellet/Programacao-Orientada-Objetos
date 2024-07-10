@@ -25,8 +25,6 @@ public class PrincipalVoo {
             System.out.println('\n' + "1. Comprar um Voo");
             System.out.println("2. Remover um Voo");
             System.out.println("3. Listar os Voos");
-            System.out.println('\n' + "========================================================");
-            System.out.println('\n' + "Opções extras");
             System.out.println("4. Listar os Trechos de um Voo");
             System.out.println("5. Listar as Execuções de Voo de um Voo");
             System.out.println("6. Listar as Execuções de Trecho de um Voo");
@@ -47,11 +45,12 @@ public class PrincipalVoo {
                     umVoo = new Voo(origem, destino);
                     try {
                         vooService.incluir(umVoo);
-                        System.out.println('\n' + "Voo número " + umVoo.getId() + " cadastrado com sucesso!");
                     }
                     catch (ObjetoDuplicadoException e){
                         System.out.println(e.getMessage());
+                        break;
                     }
+                    System.out.println('\n' + "Voo número " + umVoo.getId() + " cadastrado com sucesso!");
 
                 }
                 case 2 ->    // Remover
@@ -60,10 +59,11 @@ public class PrincipalVoo {
 
                     try {
                         vooService.remover(id);
-                        System.out.println('\n' + "Voo removido com sucesso!");
                     } catch (EntidadeNaoEncontradaException e) {
                         System.out.println('\n' + e.getMessage());
+                        break;
                     }
+                    System.out.println('\n' + "Voo removido com sucesso!");
                 }
                 case 3 -> {    // Listar tudo
                     List<Voo> voos = vooService.recuperarVoos();
@@ -159,7 +159,6 @@ public class PrincipalVoo {
                 case 9 ->{
                     int id = Console.readInt("Qual o id do voo? ");
                     String data = Console.readLine("Informe a data e hora para busca (DD/MM/AAAA HH:MM:SS): ");
-
                     try{
                         umVoo = vooService.recuperarVooPorId(id);
                     }

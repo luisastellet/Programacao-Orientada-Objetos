@@ -28,8 +28,6 @@ public class PrincipalExecTrecho {
             System.out.println('\n' + "1. Cadastrar Execução de Trecho");
             System.out.println("2. Remover Execução de Trecho"); //se não tem passagem pra ocorrer ainda
             System.out.println("3. Listar todas as Execuções de Trecho");
-            System.out.println('\n' + "========================================================");
-            System.out.println('\n' + "Opções extras");
             System.out.println("4. Listar uma Execução Voo de uma Execução de Trecho");
             System.out.println("5. Listar um Trecho de uma Execução de Trecho");
             System.out.println("6. Listar as Passagens de uma Execução de Trecho");
@@ -51,17 +49,15 @@ public class PrincipalExecTrecho {
                     try {
                         umaExecVoo = execVooService.recuperarExecucaoDeVooPorId(idExecVoo);
                         umTrecho = trechoService.recuperarTrechoPorId(idTrecho);
-                    } catch (EntidadeNaoEncontradaException | DataHoraInvalidaException e) {
+                        umaExecTrecho = new ExecTrecho(dataHoraInicial, dataHoraFinal, umaExecVoo, umTrecho);
+                        execTrechoService.incluir(umaExecTrecho);
+                        
+                    } catch (EntidadeNaoEncontradaException | DataHoraInvalidaException | VoosNaoRelacionadosException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
-                    try {
-                        umaExecTrecho = new ExecTrecho(dataHoraInicial, dataHoraFinal, umaExecVoo, umTrecho);
-                        execTrechoService.incluir(umaExecTrecho);
-                        System.out.println("\nExecução de trecho de número " + umaExecTrecho.getId() + " cadastrada com sucesso!");
-                    } catch (VoosNaoRelacionadosException | DataHoraInvalidaException e) {
-                        System.out.println('\n' + e.getMessage());
-                    }
+                    System.out.println("\nExecução de trecho de número " + umaExecTrecho.getId() + " cadastrada com sucesso!");
+                    
                 }
                 case 2 -> {
                     int id = Console.readInt(

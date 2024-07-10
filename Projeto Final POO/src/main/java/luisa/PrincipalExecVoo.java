@@ -26,8 +26,6 @@ public class PrincipalExecVoo {
             System.out.println('\n' + "1. Cadastrar Execução de Voo");
             System.out.println("2. Remover Execução de Voo");
             System.out.println("3. Listar todas as Execuções de Voo");
-            System.out.println('\n' + "========================================================");
-            System.out.println('\n' + "Opções extras");
             System.out.println("4. Listar o Voo de uma Execução de Voo");
             System.out.println("5. Listar as Execuções de Trecho de uma Execução de Voo");
             System.out.println("6. Listar os Trechos de uma Execução de Voo");

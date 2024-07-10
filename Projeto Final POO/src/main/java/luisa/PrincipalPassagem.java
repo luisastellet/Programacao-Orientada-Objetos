@@ -26,8 +26,6 @@ public class PrincipalPassagem {
             System.out.println('\n' + "1. Cadastrar Passagem");
             System.out.println("2. Remover Passagem");
             System.out.println("3. Listar todas as Passagens");
-            System.out.println('\n' + "========================================================");
-            System.out.println('\n' + "Opções extras");
             System.out.println("4. Listar as Execuções de Trecho de uma Passagem");
             System.out.println("5. Listar o Cliente de uma Passagem");
             System.out.println("6. Listar as Execuções de Voo de uma Passagem");
