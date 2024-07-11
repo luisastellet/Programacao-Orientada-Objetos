@@ -16,35 +16,31 @@ public class ExecTrechoService {
     }
 
     public ExecTrecho remover(int id) {
-        ExecTrecho execTrecho = this.recuperarExecucaoDeTrechoPorId(id);
+        ExecTrecho execTrecho = recuperarExecucaoDeTrechoPorId(id);
         if (execTrecho == null) {
             throw new EntidadeNaoEncontradaException("Execução de trecho inexistente, não é possível remover.");
         }
-        execTrecho.getExecVoo().getExecucoesTrechos().remove(execTrecho);
-        execTrecho.getTrecho().getExecucoesTrechos().remove(execTrecho);
-
-        //removendo todas as passagens dessa exectrecho e tirando as passagens das listas dos clientes
         List<Passagem> passagens = execTrecho.getPassagens();
         for (Passagem passagem : passagens) {
-            passagem.getCliente().getPassagens().remove(passagem);
-            passagens.remove(passagem);
+            passagem.getExecucoesTrechos().remove(execTrecho);
         }
-
-        execTrechoDAO.remover(execTrecho.getId());
+        execTrecho.getExecVoo().getExecucoesTrechos().remove(execTrecho);
+        execTrecho.getTrecho().getExecucoesTrechos().remove(execTrecho);
+        execTrechoDAO.remover(id);
 
         return execTrecho;
     }
 
     public ExecTrecho incluir (ExecTrecho execTrecho){
-        if (execTrecho.getTrecho().getVoo().equals(execTrecho.getExecVoo().getVoo())) {
-            execTrechoDAO.incluir(execTrecho);
-            execTrecho.getTrecho().getExecucoesTrechos().add(execTrecho);
-            execTrecho.getExecVoo().getExecucoesTrechos().add(execTrecho);
-
-        } else
+        if (!execTrecho.getTrecho().getVoo().equals(execTrecho.getExecVoo().getVoo())) {
             throw new VoosNaoRelacionadosException("Não é possível cadastrar essa execução de trecho, pois a execução de voo e o trecho não são do mesmo voo");
 
+        }
+        execTrechoDAO.incluir(execTrecho);
+        execTrecho.getExecVoo().getExecucoesTrechos().add(execTrecho);
+        execTrecho.getTrecho().getExecucoesTrechos().add(execTrecho);
         return execTrecho;
+
     }
 
     public ExecTrecho recuperarExecucaoDeTrechoPorId(int id) {

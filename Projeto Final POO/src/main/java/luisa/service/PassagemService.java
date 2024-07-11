@@ -23,7 +23,11 @@ public class PassagemService {
             if (umaExecTrecho == null) {
                 throw new EntidadeNaoEncontradaException("Execução de trecho inexiste, não é possivel cadastrar a passagem.");
             }
-            umaExecTrecho.getPassagens().add(umaPassagem);
+            List<Passagem> passagens = umaExecTrecho.getPassagens();
+            passagens.add(umaPassagem);
+//            for (Passagem passagem : passagens) {
+//                passagem.add(umaPassagem);
+//            }
             umaPassagem.getExecucoesTrechos().add(umaExecTrecho);
         }
         umaPassagem.getCliente().getPassagens().add(umaPassagem);

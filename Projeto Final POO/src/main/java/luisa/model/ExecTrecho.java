@@ -32,6 +32,18 @@ public class ExecTrecho implements Serializable{
         this.passagens = new ArrayList<>();
         this.umaExecVoo = umaExecVoo;
         this.umTrecho = umTrecho;
+        try {
+            if (!getExecVoo().getExecucoesTrechos().isEmpty()) { //se não for vazio
+                List<ExecTrecho> execTrechos = getExecVoo().getExecucoesTrechos();
+                String dataHoraUltimaExec = execTrechos.get(execTrechos.size() - 1).getDataHoraFinal();
+                checagemExecucoes(dataHoraUltimaExec, dataHoraInicial);
+            }
+
+        }
+        catch (DataHoraInvalidaException e){
+            throw new DataHoraInvalidaException(e.getMessage());
+        }
+
     }
 
     static
@@ -135,7 +147,7 @@ public class ExecTrecho implements Serializable{
         return dataHoraInicial.isBefore(agora);
     }
 
-    public boolean checagemExecucoes(String anterior, String posterior) {
+    public void checagemExecucoes(String anterior, String posterior) {
         try
         {
             int dia = Integer.parseInt(anterior.substring(0,2));
@@ -162,7 +174,7 @@ public class ExecTrecho implements Serializable{
                     ano, mes, dia, hora, minuto, segundo, 0,
                     ZoneId.of("America/Sao_Paulo")).withZoneSameInstant(ZoneId.of("UTC"));
 
-            return dataPosterior.isAfter(dataAnterior);
+            if(!dataPosterior.isAfter(dataAnterior)) throw new DataHoraInvalidaException("As datas e horas não seguem ordem lógica.");
         }
         catch(StringIndexOutOfBoundsException | NumberFormatException | DateTimeException e)
         {

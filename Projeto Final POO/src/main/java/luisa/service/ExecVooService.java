@@ -29,20 +29,24 @@ public class ExecVooService {
     }
 
     public ExecVoo incluir(ExecVoo execVoo) {
-        List<Trecho> trechos = execVoo.getVoo().getTrechos();
-        boolean verOrigem = false, verDestino = false;
-
-        for (Trecho trecho : trechos) {
-            if(trecho.getOrigem().equals(execVoo.getVoo().getOrigem())) verOrigem = true;
-            if(trecho.getDestino().equals(execVoo.getVoo().getDestino())) verDestino = true;
-            if(verOrigem && verDestino) break;
-        }
-        if(verOrigem && verDestino){
-            execVooDAO.incluir(execVoo);
-            execVoo.getVoo().getExecucoesVoos().add(execVoo);
-        }
-        else throw new TrechosNaoCompletosException("Os trechos desse voo não estão completos, portanto não é possivel comprar uma execução de voo.");
+//        List<Trecho> trechos = execVoo.getVoo().getTrechos();
+//        boolean verOrigem = false, verDestino = false;
+//
+//        for (Trecho trecho : trechos) {
+//            if(trecho.getOrigem().equals(execVoo.getVoo().getOrigem())) verOrigem = true;
+//            if(trecho.getDestino().equals(execVoo.getVoo().getDestino())) verDestino = true;
+//            if(verOrigem && verDestino) break;
+//        }
+//        if(verOrigem && verDestino){
+//            execVooDAO.incluir(execVoo);
+//            execVoo.getVoo().getExecucoesVoos().add(execVoo);
+//        }
+//        else throw new TrechosNaoCompletosException("Os trechos desse voo não estão completos, portanto não é possivel comprar uma execução de voo.");
+//        return execVoo;
+        execVooDAO.incluir(execVoo);
+        execVoo.getVoo().getExecucoesVoos().add(execVoo);
         return execVoo;
+
 
     }
 

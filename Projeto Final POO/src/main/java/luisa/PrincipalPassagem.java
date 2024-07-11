@@ -64,11 +64,11 @@ public class PrincipalPassagem {
                     try {
                         passagemService.incluir(umaPassagem, numbers);
                         passagemService.calcularPreco(umaPassagem);
+                        System.out.println("\nPassagem número " + umaPassagem.getId() + " cadastrada com sucesso!");
                     }
                     catch(EntidadeNaoEncontradaException e) {
                         System.out.println(e.getMessage());
                     }
-                    System.out.println("\nPassagem número " + umaPassagem.getId() + " cadastrada com sucesso!");
                 }
                 case 2 ->
                 {

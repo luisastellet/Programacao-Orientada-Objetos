@@ -48,7 +48,6 @@ public class PrincipalExecTrecho {
                     try {
                         umaExecVoo = execVooService.recuperarExecucaoDeVooPorId(idExecVoo);
                         umTrecho = trechoService.recuperarTrechoPorId(idTrecho);
-                        
                     } catch (EntidadeNaoEncontradaException | DataHoraInvalidaException | VoosNaoRelacionadosException e) {
                         System.out.println(e.getMessage());
                         break;
@@ -56,10 +55,13 @@ public class PrincipalExecTrecho {
                     if(umaExecVoo.getExecucoesTrechos().isEmpty()){
                         dataHoraInicial = umaExecVoo.getDataHoraInicial();
                     }
-                    else dataHoraInicial = Console.readLine("Informe a data e hora inicial da execução do trecho (DD/MM/AAAA HH:MM:SS): ");
+                    else{ //as outras exec trecho
+                        dataHoraInicial = Console.readLine("Informe a data e hora inicial da execução do trecho (DD/MM/AAAA HH:MM:SS): ");
+                    }
 
                     dataHoraFinal = Console.readLine("Informe a data e hora final da execução do trecho (DD/MM/AAAA HH:MM:SS): ");
                     try {
+
                         umaExecTrecho = new ExecTrecho(dataHoraInicial, dataHoraFinal, umaExecVoo, umTrecho);
                         execTrechoService.incluir(umaExecTrecho);
                         System.out.println("\nExecução de trecho de número " + umaExecTrecho.getId() + " cadastrada com sucesso!");

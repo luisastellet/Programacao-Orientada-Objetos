@@ -12,11 +12,12 @@ public class Principal {
     public static void main(String[] args) {
 
         PrincipalCliente principalCliente = new PrincipalCliente();
+        PrincipalExecTrecho principalExecTrecho = new PrincipalExecTrecho();
+        PrincipalExecVoo principalExecVoo = new PrincipalExecVoo();
         PrincipalPassagem principalPassagem = new PrincipalPassagem();
         PrincipalTrecho principalTrecho = new PrincipalTrecho();
         PrincipalVoo principalVoo = new PrincipalVoo();
-        PrincipalExecTrecho principalExecTrecho = new PrincipalExecTrecho();
-        PrincipalExecVoo principalExecVoo = new PrincipalExecVoo();
+
 
         recuperarDados();
 
@@ -55,7 +56,7 @@ public class Principal {
                 case 6 -> {
                     principalExecTrecho.principal();
                 }
-                case 7 -> {
+                case 7 ->{
                     continua = false;
                     salvarDados();
                 }
@@ -66,50 +67,55 @@ public class Principal {
 
     private static void recuperarDados() {
         try {
+            //obtem os objetos das classes
             ClienteDAO clienteDAO = FabricaDeDaos.getDAO(ClienteDAO.class);
+            ExecTrechoDAO execTrechoDAO = FabricaDeDaos.getDAO(ExecTrechoDAO.class);
+            ExecVooDAO execVooDAO = FabricaDeDaos.getDAO(ExecVooDAO.class);
             PassagemDAO passagemDAO = FabricaDeDaos.getDAO(PassagemDAO.class);
             TrechoDAO trechoDAO = FabricaDeDaos.getDAO(TrechoDAO.class);
             VooDAO vooDAO = FabricaDeDaos.getDAO(VooDAO.class);
-            ExecVooDAO execVooDAO = FabricaDeDaos.getDAO(ExecVooDAO.class);
-            ExecTrechoDAO execTrechoDAO = FabricaDeDaos.getDAO(ExecTrechoDAO.class);
 
-            // fis é um objeto que tem o nome do arquivo de escrita
+            //Pega o arquivo
             FileInputStream fis = new FileInputStream(new File("meusObjetos.txt"));
-            // ois é o objeto que vai ser responsável por ler o arquivo
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            //preciso criar um contador de cada classe pra acompanhar a quantidade de elementos no map
-            //se não fizer isso,
+            //Atribui oque pegou dos arquivos para a variável obtida no começo:
+
+            //Clientes
             Map<Integer, Cliente> mapDeClientes = (Map<Integer, Cliente>) ois.readObject();
             clienteDAO.setMap(mapDeClientes);
             Integer contadorDeClientes = (Integer) ois.readObject();
             clienteDAO.setContador(contadorDeClientes);
 
-            Map<Integer, Passagem> mapDePassagens = (Map<Integer, Passagem>) ois.readObject();
-            passagemDAO.setMap(mapDePassagens);
-            Integer contadorDePassagens = (Integer) ois.readObject();
-            passagemDAO.setContador(contadorDePassagens);
-
-            Map<Integer, Trecho> mapDeTrechos = (Map<Integer, Trecho>) ois.readObject();
-            trechoDAO.setMap(mapDeTrechos);
-            Integer contadorDeTrechos = (Integer) ois.readObject();
-            trechoDAO.setContador(contadorDeTrechos);
-
-            Map<Integer, Voo> mapDeVoos = (Map<Integer, Voo>) ois.readObject();
-            vooDAO.setMap(mapDeVoos);
-            Integer contadorDeVoos = (Integer) ois.readObject();
-            vooDAO.setContador(contadorDeVoos);
-
-            Map<Integer, ExecVoo> mapDeExecVoos = (Map<Integer, ExecVoo>) ois.readObject();
-            execVooDAO.setMap(mapDeExecVoos);
-            Integer contadorDeExecVoos= (Integer) ois.readObject();
-            execVooDAO.setContador(contadorDeExecVoos);
-
+            //Execução Trecho
             Map<Integer, ExecTrecho> mapDeExecTrechos = (Map<Integer, ExecTrecho>) ois.readObject();
             execTrechoDAO.setMap(mapDeExecTrechos);
-            Integer contadorDeExecTrechos = (Integer) ois.readObject();
-            execTrechoDAO.setContador(contadorDeExecTrechos);
+            Integer contadorDeExecTrecho = (Integer) ois.readObject();
+            execTrechoDAO.setContador(contadorDeExecTrecho);
 
+            //Execução Voo
+            Map<Integer,ExecVoo> mapDeExecVoos = (Map<Integer, ExecVoo>) ois.readObject();
+            execVooDAO.setMap(mapDeExecVoos);
+            Integer contadorExecDeVoo = (Integer) ois.readObject();
+            execVooDAO.setContador(contadorExecDeVoo);
+
+            //Passagem
+            Map<Integer, Passagem> mapDePassagens = (Map<Integer, Passagem>) ois.readObject();
+            passagemDAO.setMap(mapDePassagens);
+            Integer contadorDePassagem = (Integer) ois.readObject();
+            passagemDAO.setContador(contadorDePassagem);
+
+            //Trecho
+            Map<Integer, Trecho> mapDeTrechos = (Map<Integer, Trecho>) ois.readObject();
+            trechoDAO.setMap(mapDeTrechos);
+            Integer contadorDeTrecho = (Integer) ois.readObject();
+            trechoDAO.setContador(contadorDeTrecho);
+
+            //Voo
+            Map<Integer, Voo> mapDeVoos = (Map<Integer, Voo>) ois.readObject();
+            vooDAO.setMap(mapDeVoos);
+            Integer contadorDeVoo = (Integer) ois.readObject();
+            vooDAO.setContador(contadorDeVoo);
 
         } catch (FileNotFoundException e) {
             System.out.println("O arquivo meusObjetos.txt foi criado.");
@@ -122,55 +128,55 @@ public class Principal {
     }
 
     private static void salvarDados() {
+        //Pega as classes
         ClienteDAO clienteDAO = FabricaDeDaos.getDAO(ClienteDAO.class);
+        ExecTrechoDAO execTrechoDAO = FabricaDeDaos.getDAO(ExecTrechoDAO.class);
+        ExecVooDAO execVooDAO = FabricaDeDaos.getDAO(ExecVooDAO.class);
         PassagemDAO passagemDAO = FabricaDeDaos.getDAO(PassagemDAO.class);
         TrechoDAO trechoDAO = FabricaDeDaos.getDAO(TrechoDAO.class);
         VooDAO vooDAO = FabricaDeDaos.getDAO(VooDAO.class);
-        ExecTrechoDAO execTrechoDAO = FabricaDeDaos.getDAO(ExecTrechoDAO.class);
-        ExecVooDAO execVooDAO = FabricaDeDaos.getDAO(ExecVooDAO.class);
 
+        //Pega o map de cada uma delas
         Map<Integer, Cliente> mapDeClientes = clienteDAO.getMap();
-        Map<Integer, Passagem> mapDePassagens = passagemDAO.getMap();
-        Map<Integer, Trecho> mapDeTrechos = trechoDAO.getMap();
-        Map<Integer, Voo> mapDeVoos = vooDAO.getMap();
         Map<Integer, ExecTrecho> mapDeExecTrechos = execTrechoDAO.getMap();
         Map<Integer, ExecVoo> mapDeExecVoos = execVooDAO.getMap();
+        Map<Integer,Passagem> mapDePassagens = passagemDAO.getMap();
+        Map<Integer, Trecho> mapDeTrechos = trechoDAO.getMap();
+        Map<Integer, Voo> mapDeVoos = vooDAO.getMap();
 
-        Integer contadorDeClientes = clienteDAO.getContador();
-        Integer contadorDePassagens = passagemDAO.getContador();
-        Integer contadorDeTrechos = trechoDAO.getContador();
-        Integer contadorDeVoos = vooDAO.getContador();
-        Integer contadorDeExecTrechos = execTrechoDAO.getContador();
-        Integer contadorDeExecVoos = execVooDAO.getContador();
+        Integer contadorDeCliente = clienteDAO.getContador();
+        Integer contadorDeExecTrecho = execTrechoDAO.getContador();
+        Integer contadorDeExecVoo = execVooDAO.getContador();
+        Integer contadorDePassagem = passagemDAO.getContador();
+        Integer contadorDeTrecho = trechoDAO.getContador();
+        Integer contadorDeVoo = vooDAO.getContador();
+
+
+
         try {
-            //objeto criado com o nome do arquivo de escrita
+            //Cria os objetos relacionados ao arquivo
             FileOutputStream fos = new FileOutputStream(new File("meusObjetos.txt"));
-            //objeto usado para escrever no arquivo
             ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            //Escreve os maps nos arquivos
             oos.writeObject(mapDeClientes);
-            oos.writeObject(contadorDeClientes);
-
-            oos.writeObject(mapDePassagens);
-            oos.writeObject(contadorDePassagens);
-
-            oos.writeObject(mapDeTrechos);
-            oos.writeObject(contadorDeTrechos);
-
-            oos.writeObject(mapDeVoos);
-            oos.writeObject(contadorDeVoos);
-
+            oos.writeObject(contadorDeCliente);
             oos.writeObject(mapDeExecTrechos);
-            oos.writeObject(contadorDeExecTrechos);
-
+            oos.writeObject(contadorDeExecTrecho);
             oos.writeObject(mapDeExecVoos);
-            oos.writeObject(contadorDeExecVoos);
+            oos.writeObject(contadorDeExecVoo);
+            oos.writeObject(mapDePassagens);
+            oos.writeObject(contadorDePassagem);
+            oos.writeObject(mapDeTrechos);
+            oos.writeObject(contadorDeTrecho);
+            oos.writeObject(mapDeVoos);
+            oos.writeObject(contadorDeVoo);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 }
-
 
 
 
