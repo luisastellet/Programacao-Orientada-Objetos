@@ -15,12 +15,14 @@ public class ClienteService {
         return clienteDAO.incluir(cliente);
     }
 
-    public void alterarNome(Cliente cliente, String novoNome) {
+    public Cliente alterarNome(Cliente cliente, String novoNome) {
         cliente.setNome(novoNome);
+        return cliente;
     }
 
-    public void alterarCpf(Cliente cliente, String novoCpf) {
+    public Cliente alterarCpf(Cliente cliente, String novoCpf) {
         cliente.setCpf(novoCpf);
+        return cliente;
     }
 
     public Cliente recuperarClientePorId(int id) {

@@ -47,24 +47,19 @@ public class VooService {
         return vooDAO.recuperarTodos();
     }
 
-    public int calcularPassageiros(Voo umVoo, String data) {
+    public void calcularPassageiros(Voo umVoo, String referencia) {
         List<Trecho> trechos = umVoo.getTrechos();
-        List<Cliente> clientes = new ArrayList<>();
         int resp = 0;
         for (Trecho trecho : trechos) {
             List<ExecTrecho> execTrechos = trecho.getExecucoesTrechos();
             for (ExecTrecho execTrecho : execTrechos) {
-                if(execTrecho.posData(data)){
+                resp = 0;
+                if(execTrecho.posData(referencia, execTrecho.getDataHoraInicial())){
                     List<Passagem> passagens = execTrecho.getPassagens();
-                    for (Passagem passagem : passagens) {
-                        if (!clientes.contains(passagem.getCliente())){
-                            clientes.add(passagem.getCliente());
-                            resp++;
-                        }
-                    }
+                    for (Passagem passagem : passagens) resp++;
+                    System.out.println("A Execução de Trecho " + execTrecho.getId() + " teve " + resp + " passageiros.");
                 }
             }
         }
-        return resp;
     }
 }

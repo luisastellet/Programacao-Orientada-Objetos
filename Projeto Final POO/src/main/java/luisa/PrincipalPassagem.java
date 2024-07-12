@@ -11,11 +11,14 @@ public class PrincipalPassagem {
 
     private final PassagemService passagemService = new PassagemService();
     private final ClienteService clienteService = new ClienteService();
+    private final ExecTrechoService execTrechoService = new ExecTrechoService();
+
 
     public void principal() {
 
         Passagem umaPassagem;
         Cliente umCliente;
+        ExecTrecho umaExecTrecho;
         int num;
         List<Integer> numeros = new ArrayList<>(); //não sei o tamanho ainda do vetor, por isso Integer
 
@@ -26,15 +29,12 @@ public class PrincipalPassagem {
             System.out.println('\n' + "1. Cadastrar Passagem");
             System.out.println("2. Remover Passagem");
             System.out.println("3. Listar todas as Passagens");
-            System.out.println("4. Listar as Execuções de Trecho de uma Passagem");
-            System.out.println("5. Listar o Cliente de uma Passagem");
-            System.out.println("6. Listar as Execuções de Voo de uma Passagem");
-            System.out.println("7. Listar o Voo de uma Passagem");
-            System.out.println("8. Listar os Trechos de uma Passagem");
+            System.out.println("4. Relatório de Passagens");
 
-            System.out.println("9. Voltar");
+            System.out.println("5. Voltar");
 
-            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 9:");
+            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 5:");
+
 
             System.out.println();
 
@@ -47,13 +47,6 @@ public class PrincipalPassagem {
                         System.out.println(e.getMessage());
                         break;
                     }
-                    String aux = Console.readLine("Digite os ids das execuções de trechos associadas (separando por um espaço em branco): ");
-                    String[] numbersString = (aux.split(" ")); //tem todos os ids das execuções
-
-                    int[] numbers = new int[numbersString.length];
-                    for (int i = 0; i < numbersString.length; i++) {
-                        numbers[i] = Integer.parseInt(numbersString[i]);
-                    }
                     List<Passagem> passagens = passagemService.recuperarPassagens();
                     if(passagens.isEmpty()){
                         num = 10;
@@ -61,13 +54,27 @@ public class PrincipalPassagem {
                     else num = passagens.get(passagens.size()-1).getNumero();
                     umaPassagem = new Passagem(umCliente, num);
 
+                    int qtd = Console.readInt("Quantas execuções de trecho essa passagem é associada?");
+                    if(qtd == 0) break;
+                    for(int i = 0; i < qtd; i++) {
+                        int idExecTrecho = Console.readInt("Digite o id de uma execução de trecho associada à passagem:");
+                        try{
+                            umaExecTrecho = execTrechoService.recuperarExecucaoDeTrechoPorId(idExecTrecho);
+                        }
+                        catch (EntidadeNaoEncontradaException e){
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        umaPassagem.getExecucoesTrechos().add(umaExecTrecho);
+                    }
                     try {
-                        passagemService.incluir(umaPassagem, numbers);
                         passagemService.calcularPreco(umaPassagem);
+                        passagemService.incluir(umaPassagem);
                         System.out.println("\nPassagem número " + umaPassagem.getId() + " cadastrada com sucesso!");
                     }
                     catch(EntidadeNaoEncontradaException e) {
                         System.out.println(e.getMessage());
+                        break;
                     }
                 }
                 case 2 ->
@@ -80,6 +87,7 @@ public class PrincipalPassagem {
                         System.out.println('\n' + "Passagem removida com sucesso!");
                     } catch (EntidadeNaoEncontradaException | ListaDoObjetoNaoVaziaException e) {
                         System.out.println('\n' + e.getMessage());
+                        break;
                     }
                 }
                 case 3 -> {    // Listar todas as passagens
@@ -95,69 +103,23 @@ public class PrincipalPassagem {
 
                 }
                 case 4 -> {
-                    int id = Console.readInt("Qual o id da passagem? ");
                     try {
-                        umaPassagem = passagemService.recuperarPassagemPorId(id);
+                        List<Passagem> passagens = passagemService.recuperarPassagens();
+                        for (Passagem passagem : passagens) {
+                            System.out.println("Cliente: "  + passagem.getCliente().getNome());
+                            System.out.println("Execuções de trecho: ");
+                            List<ExecTrecho> execucoes = passagem.getExecucoesTrechos();
+                            for (ExecTrecho execTrecho : execucoes){
+                                System.out.println("Id: " + execTrecho.getId() + "  |  " + "Origem: " + execTrecho.getTrecho().getOrigem()+ " |  Destino: " + execTrecho.getTrecho().getDestino() + "  |  Início: " + execTrecho.getDataHoraInicial() + "  |  Fim: " + execTrecho.getDataHoraFinal());
+                            }
+                            System.out.println('\n');
+                        }
                     }catch(EntidadeNaoEncontradaException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
-                    List<ExecTrecho> execucoes = umaPassagem.getExecucoesTrechos();
-                    for (ExecTrecho exec : execucoes) {
-                        System.out.println(exec);
-                        break;
-                    }
                 }
-                case 5 -> {
-                    int id = Console.readInt("Qual o id da passagem? ");
-                    try {
-                        umaPassagem = passagemService.recuperarPassagemPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    System.out.println(umaPassagem.getCliente());
-                }
-                case 6 -> {
-                int id = Console.readInt("Qual o id da passagem? ");
-                    try {
-                        umaPassagem = passagemService.recuperarPassagemPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    List<ExecTrecho> execucoes = umaPassagem.getExecucoesTrechos();
-                    for (ExecTrecho exec : execucoes) {
-                        System.out.println(exec.getExecVoo());
-                    }
-                }
-                case 7 -> {
-                    int id = Console.readInt("Qual o id da passagem? ");
-                    try {
-                        umaPassagem = passagemService.recuperarPassagemPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    List<ExecTrecho> execucoes = umaPassagem.getExecucoesTrechos();
-                    for (ExecTrecho exec : execucoes) {
-                        System.out.println(exec.getExecVoo().getVoo());
-                    }
-                }
-                case 8 -> {
-                    int id = Console.readInt("Qual o id da passagem? ");
-                    try {
-                        umaPassagem = passagemService.recuperarPassagemPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    List<ExecTrecho> execucoes = umaPassagem.getExecucoesTrechos();
-                    for (ExecTrecho exec : execucoes) {
-                        System.out.println(exec.getTrecho());
-                    }
-                }
-                case 9 -> continua = false;
+                case 5 -> continua = false;
 
                 default -> System.out.println('\n' + "Opção inválida!");
             }

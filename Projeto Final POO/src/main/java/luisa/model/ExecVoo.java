@@ -47,7 +47,8 @@ public class ExecVoo implements Serializable {
     public String toString() {
         return "Id = " + id +
                 "  |  Início = " + getDataHoraInicial() +
-                "  |  Fim = " + getDataHoraFinal();
+                "  |  Fim = " + getDataHoraFinal() +
+                "  |  Voo = " + getVoo().getId();
     }
 
     public Integer getId() {
@@ -127,14 +128,6 @@ public class ExecVoo implements Serializable {
         if (dataHoraFinal.isBefore(dataHoraInicial)) {
             throw new DataHoraInvalidaException("A data final não pode ser anterior à data inicial.");
         }
-//        ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
-//        if(dataHoraInicial.isBefore(agora) | dataHoraFinal.isBefore(agora)){
-//            throw new DataHoraInvalidaException("As datas e horários não podem já ter ocorrido.");
-//        }
     }
 
-    public boolean jaAconteceu() {
-        ZonedDateTime agora = ZonedDateTime.now(ZoneId.of("UTC"));
-        return dataHoraInicial.isBefore(agora);
-    }
 }

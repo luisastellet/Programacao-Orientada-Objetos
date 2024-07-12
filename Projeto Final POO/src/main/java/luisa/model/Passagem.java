@@ -23,7 +23,7 @@ public class Passagem implements Serializable {
     }
 
     public String toString() {
-        return "Id = " + id + "  |  Número = " + numero + "  |  Preço = " + preco;
+        return "Id = " + id + "  |  Número = " + numero + "  |  Preço = " + preco + "  |  Cliente = " + getCliente().getId();
     }
 
     public Integer getId() {

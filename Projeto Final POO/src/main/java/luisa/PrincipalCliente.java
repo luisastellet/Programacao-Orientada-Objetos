@@ -26,15 +26,9 @@ public class PrincipalCliente {
             System.out.println("3. Remover Cliente"); //se não tem passagem pra ocorrer ainda
             System.out.println("4. Listar todos os Clientes");
             System.out.println("5. Listar os dados de um Cliente, incluindo as milhas");
-            System.out.println("6. Listar as Passagens de um Cliente");
-            System.out.println("7. Listar as Execuções de Trecho de um Cliente");
-            System.out.println("8. Listar as Execuções de Voo de um Cliente");
-            System.out.println("9. Listar os Voos de um Cliente");
-            System.out.println("10. Listar os Trechos de um Cliente");
+            System.out.println("6. Voltar");
 
-            System.out.println("11. Voltar");
-
-            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 11: ");
+            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 6: ");
 
             System.out.println();
 
@@ -69,7 +63,7 @@ public class PrincipalCliente {
                     try {
                         clienteService.remover(id);
                         System.out.println('\n' + "Cliente removido com sucesso!");
-                    } catch (EntidadeNaoEncontradaException e) {
+                    } catch (EntidadeNaoEncontradaException | ListaDoObjetoNaoVaziaException e) {
                         System.out.println('\n' + e.getMessage());
                     }
                 }
@@ -90,86 +84,7 @@ public class PrincipalCliente {
                     System.out.println(umCliente);
                     System.out.println("Quantidade de milhas até agora: " + clienteService.calcularMilhas(umCliente));
                 }
-                case 6 -> {
-                    int id = Console.readInt("Qual o id do cliente? ");
-                    try {
-                        umCliente = clienteService.recuperarClientePorId(id);
-                        List<Passagem> passagens = umCliente.getPassagens();
-                        for (Passagem passagem : passagens) {
-                            System.out.println(passagem);
-                        }
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                }
-                case 7 -> {
-                    int id = Console.readInt("Qual o id do cliente? ");
-                    try {
-                        umCliente = clienteService.recuperarClientePorId(id);
-                        List<Passagem> passagens = umCliente.getPassagens();
-                        for (Passagem passagem : passagens) {
-                            List<ExecTrecho> execTrechos = passagem.getExecucoesTrechos();
-                            for (ExecTrecho execTrecho : execTrechos){
-                                System.out.println(execTrecho);
-                            }
-                        }
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-
-                }
-                case 8 -> {
-                    int id = Console.readInt("Qual o id do cliente? ");
-                    try {
-                        umCliente = clienteService.recuperarClientePorId(id);
-                        List<Passagem> passagens = umCliente.getPassagens();
-                        for (Passagem passagem : passagens) {
-                            List<ExecTrecho> execTrechos = passagem.getExecucoesTrechos();
-                            for (ExecTrecho execTrecho : execTrechos){
-                                System.out.println(execTrecho.getExecVoo());
-                            }
-                        }
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-
-                }
-                case 9 -> {
-                    int id = Console.readInt("Qual o id do cliente? ");
-                    try {
-                        umCliente = clienteService.recuperarClientePorId(id);
-                        List<Passagem> passagens = umCliente.getPassagens();
-                        for (Passagem passagem : passagens) {
-                            List<ExecTrecho> execTrechos = passagem.getExecucoesTrechos();
-                            for (ExecTrecho execTrecho : execTrechos){
-                                System.out.println(execTrecho.getExecVoo().getVoo());
-                            }
-                        }
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                }
-                case 10 -> {
-                    int id = Console.readInt("Qual o id do cliente? ");
-                    try {
-                        umCliente = clienteService.recuperarClientePorId(id);
-                        List<Passagem> passagens = umCliente.getPassagens();
-                        for (Passagem passagem : passagens) {
-                            List<ExecTrecho> execTrechos = passagem.getExecucoesTrechos();
-                            for (ExecTrecho execTrecho : execTrechos){
-                                System.out.println(execTrecho.getTrecho());
-                            }
-                        }
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                }
-                case 11 -> continua = false;
+                case 6 -> continua = false;
 
                 default -> System.out.println('\n' + "Opção inválida!");
             }

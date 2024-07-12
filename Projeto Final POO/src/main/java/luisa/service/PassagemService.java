@@ -11,27 +11,19 @@ import java.util.List;
 public class PassagemService {
     
     private final PassagemDAO passagemDAO = FabricaDeDaos.getDAO(PassagemDAO.class);
-    private final ExecTrechoDAO execTrechoDAO = FabricaDeDaos.getDAO(ExecTrechoDAO.class);
+    //private final ExecTrechoDAO execTrechoDAO = FabricaDeDaos.getDAO(ExecTrechoDAO.class);
 
     public List<Passagem> recuperarPassagens() {
         return passagemDAO.recuperarTodos();
     }
 
-    public Passagem incluir(Passagem umaPassagem, int[] numbers) {
-        for (int number : numbers) {
-            ExecTrecho umaExecTrecho = execTrechoDAO.recuperarPorId(number);
-            if (umaExecTrecho == null) {
-                throw new EntidadeNaoEncontradaException("Execução de trecho inexiste, não é possivel cadastrar a passagem.");
-            }
-            List<Passagem> passagens = umaExecTrecho.getPassagens();
-            passagens.add(umaPassagem);
-//            for (Passagem passagem : passagens) {
-//                passagem.add(umaPassagem);
-//            }
-            umaPassagem.getExecucoesTrechos().add(umaExecTrecho);
-        }
-        umaPassagem.getCliente().getPassagens().add(umaPassagem);
+    public Passagem incluir(Passagem umaPassagem) {
         passagemDAO.incluir(umaPassagem);
+        List<ExecTrecho> execTrechos = umaPassagem.getExecucoesTrechos();
+        umaPassagem.getCliente().getPassagens().add(umaPassagem);
+        for (ExecTrecho execTrecho : execTrechos) {
+            execTrecho.getPassagens().add(umaPassagem);
+        }
         return umaPassagem;
     }
 

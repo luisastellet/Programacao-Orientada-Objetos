@@ -26,15 +26,9 @@ public class PrincipalTrecho {
             System.out.println('\n' + "1. Cadastrar um Trecho");
             System.out.println("2. Remover um Trecho");
             System.out.println("3. Listar os Trechos");
-            System.out.println("4. Listar o Voo de um Trecho");
-            System.out.println("5. Listar as Execuções de Trecho de um Trecho");
-            System.out.println("6. Listar as Execuções de Voo de um Trecho");
-            System.out.println("7. Listar as Passagens de um Trecho");
-            System.out.println("8. Listar os Clientes um Trecho");
+            System.out.println("4. Voltar");
 
-            System.out.println("9. Voltar");
-
-            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 9:");
+            int opcao = Console.readInt('\n' + "Digite um número entre 1 e 4:");
 
             System.out.println();
 
@@ -63,7 +57,7 @@ public class PrincipalTrecho {
                     try {
                         trechoService.remover(id);
                         System.out.println('\n' + "Trecho removido com sucesso!");
-                    } catch (EntidadeNaoEncontradaException e) {
+                    } catch (EntidadeNaoEncontradaException | ListaDoObjetoNaoVaziaException e) {
                         System.out.println('\n' + e.getMessage());
                         break;
                     }
@@ -74,75 +68,7 @@ public class PrincipalTrecho {
                         System.out.println(trecho);
                     }
                 }
-                case 4 -> {
-                    int id = Console.readInt("Qual o id do trecho? ");
-                    try {
-                        umTrecho = trechoService.recuperarTrechoPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    System.out.println(umTrecho.getVoo());
-                }
-                case 5 -> {
-                    int id = Console.readInt("Qual o id do trecho? ");
-                    try {
-                        umTrecho = trechoService.recuperarTrechoPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    List<ExecTrecho> execucoes = umTrecho.getExecucoesTrechos();
-                    for (ExecTrecho exec : execucoes) {
-                        System.out.println(exec);
-                    }
-                }
-                case 6 -> {
-                    int id = Console.readInt("Qual o id do trecho? ");
-                    try {
-                        umTrecho = trechoService.recuperarTrechoPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    List<ExecTrecho> execucoes = umTrecho.getExecucoesTrechos();
-                    for (ExecTrecho exec : execucoes) {
-                        System.out.println(exec.getExecVoo());
-                    }
-                }
-                case 7 -> {
-                    int id = Console.readInt("Qual o id do trecho? ");
-                    try {
-                        umTrecho = trechoService.recuperarTrechoPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    List<ExecTrecho> execucoes = umTrecho.getExecucoesTrechos();
-                    for (ExecTrecho exec : execucoes) {
-                        List<Passagem> passagens = exec.getPassagens();
-                        for(Passagem passagem : passagens){
-                            System.out.println(passagem);
-                        }
-                    }
-                }
-                case 8 -> {
-                    int id = Console.readInt("Qual o id do trecho? ");
-                    try {
-                        umTrecho = trechoService.recuperarTrechoPorId(id);
-                    }catch(EntidadeNaoEncontradaException e) {
-                        System.out.println(e.getMessage());
-                        break;
-                    }
-                    List<ExecTrecho> execucoes = umTrecho.getExecucoesTrechos();
-                    for (ExecTrecho exec : execucoes) {
-                        List<Passagem> passagens = exec.getPassagens();
-                        for(Passagem passagem : passagens){
-                            System.out.println(passagem.getCliente());
-                        }
-                    }
-                }
-                case 9 ->    // Sair
+                case 4 ->    // Sair
                     continua = false;
 
                 default -> System.out.println('\n' + "Opção inválida!");

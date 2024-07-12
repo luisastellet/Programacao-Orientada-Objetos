@@ -24,30 +24,17 @@ public class ExecVooService {
         if(execVoo.getExecucoesTrechos().isEmpty()) {
             execVoo.getVoo().getExecucoesVoos().remove(execVoo);
             execVooDAO.remover(execVoo.getId());
+            return execVoo;
         }
-        return execVoo;
+        else {
+            throw new ListaDoObjetoNaoVaziaException("Essa Execução de Voo já possui Execução de Trechos, então não pode ser excluída.");
+        }
     }
 
     public ExecVoo incluir(ExecVoo execVoo) {
-//        List<Trecho> trechos = execVoo.getVoo().getTrechos();
-//        boolean verOrigem = false, verDestino = false;
-//
-//        for (Trecho trecho : trechos) {
-//            if(trecho.getOrigem().equals(execVoo.getVoo().getOrigem())) verOrigem = true;
-//            if(trecho.getDestino().equals(execVoo.getVoo().getDestino())) verDestino = true;
-//            if(verOrigem && verDestino) break;
-//        }
-//        if(verOrigem && verDestino){
-//            execVooDAO.incluir(execVoo);
-//            execVoo.getVoo().getExecucoesVoos().add(execVoo);
-//        }
-//        else throw new TrechosNaoCompletosException("Os trechos desse voo não estão completos, portanto não é possivel comprar uma execução de voo.");
-//        return execVoo;
-        execVooDAO.incluir(execVoo);
         execVoo.getVoo().getExecucoesVoos().add(execVoo);
+        execVooDAO.incluir(execVoo);
         return execVoo;
-
-
     }
 
     public ExecVoo recuperarExecucaoDeVooPorId(int id) {

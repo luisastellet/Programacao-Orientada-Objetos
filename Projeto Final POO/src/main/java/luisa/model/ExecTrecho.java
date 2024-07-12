@@ -57,7 +57,9 @@ public class ExecTrecho implements Serializable{
     public String toString() {
         return "Id = " + id +
                 "  |  Início = " + getDataHoraInicial() +
-                "  |  Fim = " + getDataHoraFinal();
+                "  |  Fim = " + getDataHoraFinal() +
+                "  |  Execução Voo = " + getExecVoo().getId() +
+                "  |  Trecho = " + getTrecho().getId();
     }
 
     public Integer getId() {
@@ -184,7 +186,7 @@ public class ExecTrecho implements Serializable{
     }
 
 
-    public boolean posData(String data) {
+    public boolean posData(String data, String comparacao) {
         try
         {
             int dia = Integer.parseInt(data.substring(0,2));
@@ -195,18 +197,40 @@ public class ExecTrecho implements Serializable{
             int minuto =  Integer.parseInt(data.substring(14,16));
             int segundo = Integer.parseInt(data.substring(17,19));
 
-            ZonedDateTime dataIndicada = ZonedDateTime.of(
+            ZonedDateTime dataDigitada = ZonedDateTime.of(
                     ano, mes, dia, hora, minuto, segundo, 0,
                     ZoneId.of("America/Sao_Paulo")).withZoneSameInstant(ZoneId.of("UTC"));
 
-            ZonedDateTime atual = ZonedDateTime.now(ZoneId.of("UTC"));
+            dia = Integer.parseInt(data.substring(0,2));
+            mes = Integer.parseInt(data.substring(3,5));
+            ano = Integer.parseInt(data.substring(6,10));
 
-            return atual.isAfter(dataIndicada);
+            hora =    Integer.parseInt(data.substring(11,13));
+            minuto =  Integer.parseInt(data.substring(14,16));
+            segundo = Integer.parseInt(data.substring(17,19));
+
+            ZonedDateTime dataExectrecho = ZonedDateTime.of(
+                    ano, mes, dia, hora, minuto, segundo, 0,
+                    ZoneId.of("America/Sao_Paulo")).withZoneSameInstant(ZoneId.of("UTC"));
+
+            boolean ver = false;
+            if(dataExectrecho.isAfter(dataDigitada)) ver = true;
+            if(dataExectrecho.isEqual(dataDigitada)) ver = true;
+            return ver;
         }
         catch(StringIndexOutOfBoundsException | NumberFormatException | DateTimeException e)
         {
             throw new DataHoraInvalidaException("Data e hora inválida.");
         }
 
+    }
+
+    public void calcularPreco(Passagem umaPassagem){
+        double resp = 0.0;
+        List<ExecTrecho> execTrechos = umaPassagem.getExecucoesTrechos();
+        for (ExecTrecho execTrecho : execTrechos) {
+            resp += execTrecho.getTrecho().getPreco();
+        }
+        umaPassagem.setPreco(resp);
     }
 }

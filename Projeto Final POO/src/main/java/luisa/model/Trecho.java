@@ -18,7 +18,14 @@ public class Trecho implements Serializable{
 
 
     public Trecho (String origem, String destino, int milhas, double preco, Voo umVoo)
-    {	this.origem = origem;
+    {
+        if(umVoo.getTrechos().isEmpty()){
+            this.origem = umVoo.getOrigem();
+        }
+        else{
+            List<Trecho> trechos = umVoo.getTrechos();
+            this.origem = trechos.get(trechos.size() - 1).destino;
+        }
         this.destino = destino;
         this.milhas = milhas;
         this.preco = preco;
@@ -35,7 +42,7 @@ public class Trecho implements Serializable{
     }
 
     public String toString() {
-        return "Id = " + id + "  |  Origem = " + origem + "  |  Destino = " + destino + "  |  Milhas = " + milhas + "  |  Preço = " + preco;
+        return "Id = " + id + "  |  Origem = " + origem + "  |  Destino = " + destino + "  |  Milhas = " + milhas + "  |  Preço = " + preco + "  |  Voo = " + getVoo().getId();
     }
 
     public String getOrigem (){
